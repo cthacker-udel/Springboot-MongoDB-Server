@@ -23,7 +23,7 @@ public class AppConfig {
 
     public MongoClient mongoClient(){
 
-        //ConnectionString connectionString = new ConnectionString();
+        ConnectionString connectionString = new ConnectionString("");
 
         MongoClientSettings settings = MongoClientSettings.builder()
                 .applyConnectionString(connectionString)

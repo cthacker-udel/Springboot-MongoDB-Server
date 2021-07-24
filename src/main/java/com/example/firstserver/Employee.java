@@ -27,6 +27,9 @@ public class Employee {
     @Field("DOB[D]")
     private int dobDay;
 
+    @Field("ID")
+    private Integer ID;
+
 
     private Calendar dob = Calendar.getInstance();
     //newCalendar.set(2021,7,23);
@@ -36,11 +39,12 @@ public class Employee {
     @Field("DOB")
     private String DOB;// = format.format(theDate);
 
-    public Employee(String Name, String Position, String DOB){
+    public Employee(String Name, String Position, String DOB, Integer ID){
 
         this.Name = Name;
         this.Position = Position;
         this.DOB = DOB;
+        this.ID = ID;
 
     }
 
@@ -59,6 +63,13 @@ public class Employee {
     }
     */
 
+    public Integer getID() {
+        return ID;
+    }
+
+    public void setId(Integer ID) {
+        this.ID = ID;
+    }
 
     public void setName(String Name){
 
@@ -119,7 +130,7 @@ public class Employee {
         org.bson.Document doc = new org.bson.Document();
 
         doc.put("Name",this.getName());
-        doc.put("id",this.employeeId);
+        doc.put("ID",this.getID());
         doc.put("Position",this.getPosition());
         doc.put("DOB",this.getDOB());
 

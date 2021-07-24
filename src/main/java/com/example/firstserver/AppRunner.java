@@ -22,18 +22,18 @@ public class AppRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("Collection Exists? " + mongoTemplate.collectionExists("Employees"));
-        MongoCollection<Document> employeeCollection = mongoTemplate.getCollection("Employees");
+        //System.out.println("Collection Exists? " + mongoTemplate.collectionExists("Employees"));
+        //MongoCollection<Document> employeeCollection = mongoTemplate.getCollection("Employees");
 
         //BasicDBObject basicDBObject = new BasicDBObject();
         //basicDBObject.append("#00001",new Employee("Cameron Thacker","Software Engineer",10,20,1998));
 
         //employeeCollection.insertOne(new Employee("Cameron Thacker","Software Engineer",10,20,1998).pojoToDoc());
 
-        Criteria criteria = Criteria.where("Name").is("Cameron Thacker");
-        Query query = Query.query(criteria);
-        Employee employee = mongoTemplate.findOne(query,Employee.class);
-        int x = 10;
+        //Criteria criteria = Criteria.where("Name").is("Cameron Thacker");
+        //Query query = Query.query(criteria);
+        //Employee employee = mongoTemplate.findOne(query,Employee.class);
+        //int x = 10;
 
 
         //Map<String,Object> employeesToAdd = new LinkedHashMap<>();
