@@ -23,7 +23,7 @@ public class AppConfig {
 
     public MongoClient mongoClient(){
 
-        ConnectionString connectionString = new ConnectionString("");
+        //ConnectionString connectionString = new ConnectionString();
 
         MongoClientSettings settings = MongoClientSettings.builder()
                 .applyConnectionString(connectionString)
@@ -32,13 +32,6 @@ public class AppConfig {
         MongoClient client = MongoClients.create(settings);
 
         MongoDatabase database = client.getDatabase("WORKFORCE");
-
-        //try {
-        //    database.createCollection("thisisatest");
-        //}
-        //catch(Exception e){
-        //    System.out.println("\nCollection already exists!");
-        //}
 
         return client;
 

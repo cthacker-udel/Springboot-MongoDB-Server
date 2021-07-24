@@ -129,7 +129,7 @@ public class Employee {
 
     public String toString(){
 
-        return String.format("\n-=-=-=Employee %s-=-=-=\nName : %s\nPosition : %s\nDOB : %s\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=",this.employeeId,this.Name,this.Position,this.dob);
+        return String.format("\n-=-=-=Employee %s-=-=-=\nName : %s\nPosition : %s\nDOB : %s\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=",this.employeeId,this.Name,this.Position,this.DOB);
 
     }
 
