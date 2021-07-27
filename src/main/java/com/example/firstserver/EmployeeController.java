@@ -2,6 +2,7 @@ package com.example.firstserver;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.result.DeleteResult;
 import org.apache.coyote.Response;
 import org.bson.Document;
@@ -20,6 +21,9 @@ public class EmployeeController {
 
     @Autowired
     MongoTemplate mongoTemplate;
+
+    @Autowired
+    MongoDatabase mongoDatabase;
 
     private static final String Name = "";
     private static final String Position = "";
