@@ -2,6 +2,7 @@ package com.example.firstserver;
 
 
 import com.mongodb.client.MongoCollection;
+import org.apache.coyote.Response;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -68,6 +69,21 @@ public class ServerController {
             System.out.println("\n-------- RESPONSE 400 --------\nCollection Names failed to be acquired!\n");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
+        }
+
+    }
+
+    @GetMapping("/admin/exists/collection/{collectionName}")
+    public Object collectionExists(@PathVariable String collectionName){
+
+        try{
+            boolean exists = mongoTemplate.collectionExists(collectionName);
+            System.out.println("\n-------- RESPONSE 200 --------\nCollection Validity Acquired![DOES EXIST]\n");
+            return exists? new ResponseEntity<>(HttpStatus.ACCEPTED) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        catch(Exception e){
+            System.out.println("\n-------- RESPONSE 400 --------\nCollection Validity acquired![DOES NOT EXIST]\n");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
     }
