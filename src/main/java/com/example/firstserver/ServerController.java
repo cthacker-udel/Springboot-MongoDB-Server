@@ -78,7 +78,7 @@ public class ServerController {
 
         try{
             boolean exists = mongoTemplate.collectionExists(collectionName);
-            System.out.println("\n-------- RESPONSE 200 --------\nCollection Validity Acquired![DOES EXIST]\n");
+            System.out.println("\n-------- RESPONSE " + (exists? "200": "400") + "--------\nCollection Validity Acquired![DOES " + (exists? "": "NOT") + " EXIST]\n");
             return exists? new ResponseEntity<>(HttpStatus.ACCEPTED) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         catch(Exception e){
