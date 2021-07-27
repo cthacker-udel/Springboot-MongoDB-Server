@@ -25,10 +25,9 @@ public class ServerController {
     public Object getCollection(@PathVariable String collectionName){
 
         try{
-
             MongoCollection<Document> theCollection = mongoTemplate.getCollection(collectionName);
             System.out.println("\n-------- RESPONSE 200 --------\nCollection successfully acquired!\n");
-            return theCollection;
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
         }
         catch(Exception e){
 
