@@ -83,7 +83,7 @@ public class Admin {
         this.ADMINID = ADMINID;
     }
 
-    public org.bson.Document pojoToDob(){
+    public org.bson.Document pojoToDoc(){
 
         org.bson.Document newDoc = new org.bson.Document();
         newDoc.append("Name",this.Name);
