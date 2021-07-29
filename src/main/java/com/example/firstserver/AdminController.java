@@ -91,4 +91,26 @@ public class AdminController {
     }
 
 
+    @GetMapping("/admin/{adminId}")
+    public Object getAdmin(@PathVariable("adminId") Integer adminId){
+
+        try{
+
+            Criteria criteria = Criteria.where("ADMINID").is(adminId);
+            Query query = Query.query(criteria);
+            Admin theAdmin = mongoTemplate.findOne(query,Admin.class);
+            assert theAdmin != null;
+            System.out.println(theAdmin.toString());
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+
+        }
+        catch(Exception e){
+
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+
+        }
+
+    }
+
+
 }
