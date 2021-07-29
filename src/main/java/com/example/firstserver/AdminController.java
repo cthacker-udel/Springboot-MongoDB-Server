@@ -112,5 +112,24 @@ public class AdminController {
 
     }
 
+    @DeleteMapping("/admin/{adminId}")
+    public Object removeAdmin(@PathVariable("adminId") Integer adminId){
+
+        try{
+
+            Criteria criteria = Criteria.where("ADMINID").is(adminId);
+            Query query = Query.query(criteria);
+            mongoTemplate.findAndRemove(query,Admin.class);
+            System.out.println("\n---- STATUS 200 ----\nAdmin successfully removed!");
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+
+        }
+        catch(Exception e){
+            System.out.println("\n----- STATUS 400 -----\nUnable to remove admin");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
 
 }
