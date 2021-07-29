@@ -2,12 +2,11 @@ package com.example.firstserver;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.List;
@@ -64,6 +63,29 @@ public class AdminController {
             System.out.println("\n--------- STATUS 400 ---------\nREQUEST ERROR!\n");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
+        }
+
+    }
+
+    @PutMapping("/admin/{adminID}")
+    public Object updateAdmin(@PathVariable("adminID") Integer adminID, @RequestBody Admin newAdmin){
+
+        try{
+
+            Criteria theCriteria = Criteria.where("ADMINID").is(adminID);
+            Query query = Query.query(theCriteria);
+
+            Admin origAdmin = mongoTemplate.findOne(query,Admin.class);
+
+            assert origAdmin != null;
+            mongoTemplate.getCollection("ADMIN").findOneAndReplace(origAdmin.pojoToDoc(),newAdmin.pojoToDoc());
+            System.out.println("\n------- STATUS 200 -------\nADMIN HAS BEEN REPLACED\n");
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+
+        }
+        catch(Exception e){
+            System.out.println("\n------- STATUS 400 -------\nINVALID REQUEST\n");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
     }
