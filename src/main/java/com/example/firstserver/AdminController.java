@@ -1,5 +1,6 @@
 package com.example.firstserver;
 
+import com.mongodb.client.result.DeleteResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -126,6 +127,46 @@ public class AdminController {
         }
         catch(Exception e){
             System.out.println("\n----- STATUS 400 -----\nUnable to remove admin");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    @GetMapping("/admin/count")
+    public Long adminCount(){
+
+        try{
+
+            Long numAdmin = mongoTemplate.getCollection("ADMIN").estimatedDocumentCount();
+            System.out.println("\n---- STATUS 200 ----\nADMIN COUNT : " + numAdmin + "\n");
+            return numAdmin;
+
+        }
+        catch(Exception e){
+            System.out.println("\n---- STATUS 400 ----\nUnable to count # of admin");
+            return 0L;
+        }
+
+    }
+
+    @DeleteMapping("/admin")
+    public Object removeAllAdmin(){
+
+        try{
+
+            DeleteResult result = mongoTemplate.remove(new Query(),Admin.class);
+            if(result.wasAcknowledged()){
+                System.out.println("\n---- STATUS 200 ----\nAll Admin have been removed from collection");
+                return new ResponseEntity<>(HttpStatus.ACCEPTED);
+            }
+            else{
+                System.out.println("\n---- STATUS 400 ----\nThe removal of all Admin has not been completed");
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+
+        }
+        catch(Exception e){
+            System.out.println("\n---- STATUS 400 ---\nUnable to remove all admin");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
