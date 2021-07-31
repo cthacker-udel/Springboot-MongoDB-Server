@@ -192,8 +192,8 @@ public class AdminController {
 
     }
 
-    @GetMapping("/admin/{name}")
-    public Object getAdminByName(@PathVariable("name") String adminName){
+    @GetMapping("/admin/name/{Name}")
+    public Object getAdminByName(@PathVariable("Name") String adminName){
 
         try{
 
