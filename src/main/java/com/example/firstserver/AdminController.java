@@ -10,7 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class AdminController {
@@ -168,6 +171,42 @@ public class AdminController {
         catch(Exception e){
             System.out.println("\n---- STATUS 400 ---\nUnable to remove all admin");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    @GetMapping("/admin/names")
+    public Object listAdminNames(){
+
+        try{
+            List<Admin> adminList = mongoTemplate.findAll(Admin.class);
+            List<String> adminNames = new LinkedList<>();
+            adminList.forEach(e -> adminNames.add(e.getName()));
+            System.out.println("\n---- STATUS 200 ----\nList of Admin Names generated successfully!");
+            return adminNames;
+        }
+        catch(Exception e){
+            System.out.println("\n---- STATUS 400 ----\nUnable to list all admin names");
+            return new LinkedList<>();
+        }
+
+    }
+
+    @GetMapping("/admin/{name}")
+    public Object getAdminByName(@PathVariable("name") String adminName){
+
+        try{
+
+            Criteria criteria = Criteria.where("Name").is(adminName);
+            Query query = Query.query(criteria);
+            List<Admin> admins = mongoTemplate.find(query,Admin.class);
+            System.out.println("\n---- STATUS 200 ----\nListed all admin with name specified upon request");
+            return admins;
+
+        }
+        catch(Exception e){
+            System.out.println("\n---- Status 400 ----\nUnable to find admin by name");
+            return new LinkedList<String>();
         }
 
     }
