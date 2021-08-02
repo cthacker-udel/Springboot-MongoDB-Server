@@ -30,18 +30,20 @@ public class SoccerPlayer {
 
     @Size(min=0)
     @NotNull
-    public Integer yellowCards;
+    public Integer YellowCards;
 
 
     @Size(min=0)
     @NotNull
-    public Integer redCards;
+    public Integer RedCards;
 
-    public SoccerPlayer(String FirstName, String LastName, String DOB, String Position){
+    public SoccerPlayer(String FirstName, String LastName, String DOB, String Position,Integer RedCards, Integer YellowCards){
         this.FirstName = FirstName;
         this.LastName = LastName;
         this.DOB = DOB;
         this.Position = Position;
+        this.RedCards = RedCards;
+        this.YellowCards = YellowCards;
     }
 
     public String getPlayerId() {
@@ -87,7 +89,7 @@ public class SoccerPlayer {
     @Override
     public String toString(){
 
-        return new String.format("\n-=-=PLAYER %s-=-=\n")
+        return String.format("\n-=-=PLAYER %s-=-=\nFirst Name : %s\nLast Name : %s\nDOB : %s\nPosition : %s\nYellow Cards : %d\nRed Cards : %d",this.playerId,this.FirstName,this.LastName, this.DOB,this.Position,this.YellowCards,this.RedCards);
 
     }
 }

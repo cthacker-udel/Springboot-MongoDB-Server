@@ -13,11 +13,12 @@ public class Defender extends SoccerPlayer{
     @NotNull
     public Integer Steals;
 
-    public Defender(String FirstName, String LastName, String DOB, String Position,Integer Steals, Integer Tackles) {
-        super(FirstName, LastName, DOB, Position);
+    public Defender(String FirstName, String LastName, String DOB, String Position, Integer RedCards, Integer YellowCards, Integer Tackles, Integer Steals) {
+        super(FirstName, LastName, DOB, Position, RedCards, YellowCards);
         this.Tackles = Tackles;
         this.Steals = Steals;
     }
+
 
     public Integer getTackles() {
         return Tackles;
