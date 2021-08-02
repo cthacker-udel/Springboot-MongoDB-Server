@@ -4,25 +4,42 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 @Document(collection = "ADMIN")
 public class Admin {
 
     @Id
     private String adminId;
 
+    @Size(min=1,max=50)
     @Field("Name")
+    @NotNull
     private String Name;
 
+    @Size(min=1,max=20)
     @Field("Clearance")
+    @NotNull
     private String Clearance;
 
+    @Size(min=1,max=30)
     @Field("Role")
+    @NotNull
     private String Role;
 
+    // MM/DD/YYYY
+    @Size(min=9,max=9)
     @Field("DOB")
+    @NotNull
     private String DOB;
 
+    @Min(0)
+    @Max(999999)
     @Field("ADMINID")
+    @NotNull
     private Integer ADMINID;
 
     public Admin(String Name, String Clearance, String Role, String DOB, Integer ADMINID){

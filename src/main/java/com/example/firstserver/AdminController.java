@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,7 +23,7 @@ public class AdminController {
     MongoTemplate mongoTemplate;
 
     @PostMapping("/admin")
-    public Object createAdmin(@RequestBody Admin newAdmin){
+    public Object createAdmin(@Valid @RequestBody Admin newAdmin){
 
         if(mongoTemplate.collectionExists("ADMIN")){
 
@@ -72,7 +73,7 @@ public class AdminController {
     }
 
     @PutMapping("/admin/{adminID}")
-    public Object updateAdmin(@PathVariable("adminID") Integer adminID, @RequestBody Admin newAdmin){
+    public Object updateAdmin(@PathVariable("adminID") Integer adminID, @Valid @RequestBody Admin newAdmin){
 
         try{
 
