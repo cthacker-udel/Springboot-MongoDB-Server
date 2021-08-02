@@ -1,15 +1,15 @@
 package com.example.firstserver;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotNull;
+
+@Document
 public class Defender extends SoccerPlayer{
 
-    @Size(min=0)
     @NotNull
     public Integer Tackles;
 
-    @Size(min=0)
     @NotNull
     public Integer Steals;
 
