@@ -18,9 +18,19 @@ public class SoccerPlayerController {
 
         SoccerPlayer player = repository.findByFirstName(FirstName);
         if(player == null){
-            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid First Name","Error: First name does not exist in database");
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid First Name","Error: First name " + FirstName + " does not exist in database");
         }
-        return repository.findByFirstName(FirstName);
+        return player;
+    }
+
+    @GetMapping("/soccer/name/last/{lastName}")
+    public Object getByLastName(@PathVariable("lastName") String lastName){
+
+        SoccerPlayer player = repository.findByLastName(lastName);
+        if(player == null){
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Last Name","Error : Last name, " + lastName + " does not exist in database");
+        }
+        return player;
     }
 
 }
