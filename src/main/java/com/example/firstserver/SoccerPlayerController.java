@@ -85,7 +85,7 @@ public class SoccerPlayerController {
     public Object getByRedCards(@PathVariable("redCards") Integer redCards){
 
         try{
-            List<SoccerPlayer> players = repository.findByRedCards(redCards):
+            List<SoccerPlayer> players = repository.findByRedCards(redCards);
             if(players == null){
                 throw new Exception("");
             }
