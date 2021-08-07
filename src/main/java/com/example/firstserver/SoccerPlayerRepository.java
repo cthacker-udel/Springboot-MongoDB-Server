@@ -12,5 +12,6 @@ public interface SoccerPlayerRepository extends MongoRepository<SoccerPlayer, St
     public SoccerPlayer insert(SoccerPlayer Player);
     public SoccerPlayer save(SoccerPlayer Player);
     public boolean existsByLastName(String lastName);
+    public List<SoccerPlayer> findByDOB(String DOB);
 
 }

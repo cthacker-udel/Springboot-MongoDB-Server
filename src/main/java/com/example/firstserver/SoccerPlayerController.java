@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class SoccerPlayerController {
 
@@ -44,6 +46,38 @@ public class SoccerPlayerController {
             System.out.println(result.toString());
         }
         return result;
+
+    }
+
+    @PostMapping("/soccer")
+    public Object addSoccerPlayer(@RequestBody SoccerPlayer player){
+
+
+        try{
+            repository.insert(player);
+            return player;
+        }
+        catch(Exception e){
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid body format","The Soccer Player you tried inserting is not valid");
+        }
+
+    }
+
+    @GetMapping("/soccer/{DOB}")
+    public Object getByDOB(@PathVariable("DOB") String DOB){
+
+        try{
+            List<SoccerPlayer> players = repository.findByDOB(DOB);
+            if(players == null){
+                throw new Exception("Invalid request");
+            }
+            else{
+                return players;
+            }
+        }
+        catch(Exception e){
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid DOB entry","There are no soccer players with that DOB in the database");
+        }
 
     }
 
