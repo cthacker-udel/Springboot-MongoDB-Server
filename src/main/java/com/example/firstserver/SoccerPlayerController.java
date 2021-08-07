@@ -63,7 +63,7 @@ public class SoccerPlayerController {
 
     }
 
-    @GetMapping("/soccer/{DOB}")
+    @GetMapping("/soccer/dob/{DOB}")
     public Object getByDOB(@PathVariable("DOB") String DOB){
 
         try{
@@ -77,6 +77,24 @@ public class SoccerPlayerController {
         }
         catch(Exception e){
             return new ApiError(HttpStatus.BAD_REQUEST,"Invalid DOB entry","There are no soccer players with that DOB in the database");
+        }
+
+    }
+
+    @GetMapping("/soccer/red_cards/{redCards}")
+    public Object getByRedCards(@PathVariable("redCards") Integer redCards){
+
+        try{
+            List<SoccerPlayer> players = repository.findByRedCards(redCards):
+            if(players == null){
+                throw new Exception("");
+            }
+            else{
+                return players;
+            }
+        }
+        catch(Exception e){
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid request","Invalid request");
         }
 
     }
