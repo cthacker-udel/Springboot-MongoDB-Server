@@ -1,6 +1,9 @@
 package com.example.firstserver;
 
+import com.mongodb.client.result.DeleteResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +15,9 @@ public class SoccerPlayerController {
 
     @Autowired
     SoccerPlayerRepository repository;
+
+    @Autowired
+    MongoTemplate mongoTemplate;
 
     @GetMapping("/soccer/name/first/{FirstName}")
     public Object getByFirstName(@PathVariable("FirstName") String FirstName){
@@ -63,15 +69,34 @@ public class SoccerPlayerController {
 
     }
 
-    @GetMapping("/soccer/dob/{DOB}")
-    public Object getByDOB(@PathVariable("DOB") String DOB){
+    @DeleteMapping("/soccer/removeAll")
+    public Object removeAllSoccerPlayers(){
 
         try{
-            List<SoccerPlayer> players = repository.findByDOB(DOB);
+            DeleteResult result = mongoTemplate.remove(new Query(),SoccerPlayer.class);
+            if(result.wasAcknowledged()) {
+                return new ResponseEntity<>(HttpStatus.ACCEPTED);
+            }
+            else{
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+        }
+        catch(Exception e){
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","400 : Invalid Request to remove all entities");
+        }
+
+    }
+
+    @GetMapping("/soccer/date/{dateOfBirth}")
+    public Object getByDOB(@PathVariable("dateOfBirth") String dateOfBirth){
+
+        try{
+            List<SoccerPlayer> players = repository.findByDOB(dateOfBirth);
             if(players == null){
                 throw new Exception("Invalid request");
             }
             else{
+                players.forEach(e -> System.out.println(e.toString()));
                 return players;
             }
         }
@@ -90,6 +115,7 @@ public class SoccerPlayerController {
                 throw new Exception("");
             }
             else{
+                players.forEach(e -> System.out.println(e.toString()));
                 return players;
             }
         }
