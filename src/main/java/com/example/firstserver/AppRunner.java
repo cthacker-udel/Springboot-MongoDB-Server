@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/*
 
 @Component
 public class AppRunner implements CommandLineRunner {
@@ -30,5 +31,6 @@ public class AppRunner implements CommandLineRunner {
         //repository.insert(new SoccerPlayer("Lionel","Messi","12/1/1990","Striker",0,0));
     }
 }
+ */
 
 

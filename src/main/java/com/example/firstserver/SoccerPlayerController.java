@@ -104,7 +104,7 @@ public class SoccerPlayerController {
 
         try{
             List<SoccerPlayer> players = repository.findByYellowCards(yellowCards);
-            players.forEach(SoccerPlayer::toString);
+            players.stream().forEach(e -> System.out.println(e.toString()));
             return players;
         }
         catch(Exception e){
@@ -124,7 +124,6 @@ public class SoccerPlayerController {
         catch(Exception e){
             return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","Invalid position sent");
         }
-
 
     }
 

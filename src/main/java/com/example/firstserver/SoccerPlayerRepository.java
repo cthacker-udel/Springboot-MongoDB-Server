@@ -12,10 +12,16 @@ public interface SoccerPlayerRepository extends MongoRepository<SoccerPlayer, St
     public SoccerPlayer insert(SoccerPlayer Player);
     public SoccerPlayer save(SoccerPlayer Player);
     public boolean existsByLastName(String lastName);
+
     public List<SoccerPlayer> findByDOB(String DOB);
     public List<SoccerPlayer> findByRedCards(Integer redCards);
     public List<SoccerPlayer> findByYellowCards(Integer yellowCards);
-    public SoccerPlayer remove(SoccerPlayer player);
+
+    public List<SoccerPlayer> findAll();
+
+    public SoccerPlayer removeByLastName(String firstName);
     public SoccerPlayer removeByFirstName(String firstName);
+
+    public Integer countByFirstName(String firstName);
 
 }
