@@ -99,12 +99,12 @@ public class SoccerPlayerController {
 
     }
 
-    @GetMapping("/soccer/yello_cards/{yellowCards}")
+    @GetMapping("/soccer/yellow_cards/{yellowCards}")
     public Object getByYellowCards(@PathVariable("yellowCards") Integer yellowCards){
 
         try{
             List<SoccerPlayer> players = repository.findByYellowCards(yellowCards);
-            players.forEach(e -> e.toString());
+            players.forEach(SoccerPlayer::toString);
             return players;
         }
         catch(Exception e){
@@ -112,6 +112,23 @@ public class SoccerPlayerController {
         }
 
     }
+
+    @GetMapping("soccer/position/{position}")
+    public Object getByPosition(@PathVariable("position") String position){
+
+        try{
+            List<SoccerPlayer> players = repository.findByPosition(position);
+            players.forEach(SoccerPlayer::toString);
+            return players;
+        }
+        catch(Exception e){
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","Invalid position sent");
+        }
+
+
+    }
+
+
 
 
 
