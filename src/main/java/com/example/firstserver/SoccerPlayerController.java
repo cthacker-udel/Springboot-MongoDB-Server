@@ -99,4 +99,20 @@ public class SoccerPlayerController {
 
     }
 
+    @GetMapping("/soccer/yello_cards/{yellowCards}")
+    public Object getByYellowCards(@PathVariable("yellowCards") Integer yellowCards){
+
+        try{
+            List<SoccerPlayer> players = repository.findByYellowCards(yellowCards);
+            players.forEach(e -> e.toString());
+            return players;
+        }
+        catch(Exception e){
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","Invalid amount sent");
+        }
+
+    }
+
+
+
 }

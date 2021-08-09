@@ -14,5 +14,6 @@ public interface SoccerPlayerRepository extends MongoRepository<SoccerPlayer, St
     public boolean existsByLastName(String lastName);
     public List<SoccerPlayer> findByDOB(String DOB);
     public List<SoccerPlayer> findByRedCards(Integer redCards);
+    public List<SoccerPlayer> findByYellowCards(Integer yellowCards);
 
 }
