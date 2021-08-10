@@ -4,9 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class UserController {
@@ -35,6 +33,23 @@ public class UserController {
         }
         catch(Exception e){
             return new ApiError(HttpStatus.BAD_REQUEST,"Attempting to add user to database","Invalid request");
+        }
+
+    }
+
+    @GetMapping("/user/username/{userName}")
+    public Object getUserByUserName(@PathVariable("userName") String userName, @RequestParam(value="auth",defaultValue = "noauth") String secretKey){
+
+        String signature = new StringBuffer(secretKey).reverse().toString();
+        if(repository.existsBySecretKey(signature)){
+            // valid authorization
+            User theUser = repository.getUserByUserName(userName);
+            System.out.println("\nSTATUS 200 : Successfully acquired user\n");
+            return theUser;
+        }
+        else{
+            System.out.println("\nSTATUS 400 : Authorization failed\n");
+            return new ApiError(HttpStatus.BAD_REQUEST,"Authorization Error","Error: Signataure passed in request was invalid");
         }
 
     }
