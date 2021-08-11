@@ -80,6 +80,23 @@ public class UserController {
 
     }
 
+    @GetMapping("/user/userpass")
+    public Object getUserViaUsernamePassword(@RequestParam(value="username",defaultValue = "nousername") String userName, @RequestParam(value="password",defaultValue = "nopass") String password){
+
+        if(repository.existsByPassword(password) && repository.existsByUserName(userName)){
+
+            // user exists
+            return repository.getUserByUserName(userName);
+
+        }
+        else{
+
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid request","Invalid username and password provided");
+
+        }
+
+    }
+
 
 
 
