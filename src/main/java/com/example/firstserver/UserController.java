@@ -6,6 +6,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.nio.charset.StandardCharsets;
+import java.security.*;
+import java.util.Base64;
+
 @RestController
 public class UserController {
 
@@ -38,7 +46,8 @@ public class UserController {
     }
 
     @GetMapping("/user/username/{userName}")
-    public Object getUserByUserName(@PathVariable("userName") String userName, @RequestParam(value="auth",defaultValue = "noauth") String secretKey){
+    public Object getUserByUserName(@PathVariable("userName") String userName, @RequestParam(value="auth",defaultValue = "noauth") String secretKey) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+
 
         String signature = new StringBuffer(secretKey).reverse().toString();
         if(repository.existsBySecretKey(signature)){
@@ -53,6 +62,25 @@ public class UserController {
         }
 
     }
+
+    @GetMapping("/user/apikey/{apiKey}")
+    public Object getUserByApiKey(@PathVariable("apiKey") String apiKey, @RequestParam(value="password",defaultValue = "nopass") String password){
+
+        String signature = new StringBuffer(password).reverse().toString();
+
+        if(repository.existsByPassword(signature)){
+            // user exists
+            System.out.println("\nStatus 200 : User Exists!\n");
+            return repository.getUserByApiKey(apiKey);
+
+        }
+        else{
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","You provided the incorrect password");
+        }
+
+    }
+
+
 
 
 

@@ -17,6 +17,7 @@ public interface UserRepository extends MongoRepository<User,String> {
     public boolean existsByUserName(String userName);
     public boolean existsByApiKey(String apiKey);
     public boolean existsBySecretKey(String secretKey);
+    public boolean existsByPassword(String password);
 
     public List<User> findAll();
 
