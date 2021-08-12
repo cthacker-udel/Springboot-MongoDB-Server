@@ -97,6 +97,29 @@ public class UserController {
 
     }
 
+    @GetMapping("/user/username/{username}/find")
+    public Object findUserByName(@PathVariable("username") String userName, @RequestParam(value="password",defaultValue="defpassword") String password){
+
+        User theUser = repository.findByUserName(userName);
+        if(theUser != null){
+            // user exists
+            String hashedPass = new StringBuilder(password).reverse().toString();
+            if(hashedPass == theUser.password){
+                // correct password
+                return theUser;
+            }
+            else{
+                return new ApiError(HttpStatus.BAD_REQUEST,"Invalid password","The password you passed into the find user by username function is incorrect");
+            }
+        }
+        else{
+            System.out.println("\nSTATUS 400: UNABLE TO RETRIEVE USER\n");
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid request","Specified user with username passed does not exist in database");
+        }
+
+    }
+
+
 
 
 
