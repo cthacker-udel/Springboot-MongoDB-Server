@@ -168,6 +168,22 @@ public class UserController {
 
     }
 
+    @DeleteMapping("/user/remove/username/{theName}")
+    public Object removeByUserName(@PathVariable("theName") String theName, @RequestHeader("password") String pass){
+
+        String hashedPass = new StringBuilder(pass).reverse().toString();
+
+        if(repository.existsBySecretKey(hashedPass)){
+            return repository.removeByUserName(theName);
+        }
+        else{
+
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid request","Invalid secret key passed in");
+
+        }
+
+    }
+
 
 
 
