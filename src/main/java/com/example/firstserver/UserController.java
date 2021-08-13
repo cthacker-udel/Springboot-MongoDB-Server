@@ -136,9 +136,13 @@ public class UserController {
     }
 
     @PostMapping("/user/save")
-    public Object saveUser(@RequestBody User user){
+    public Object saveUser(@RequestBody User user, @RequestHeader("password") String pass){
 
-        if(repository.existsByUserName(user.userName)){
+        // verify secretKey
+
+        String hashedSecretKey = new StringBuilder(pass).reverse().toString();
+
+        if(repository.existsBySecretKey(hashedSecretKey)){
             // valid save
             repository.save(user);
             return new ResponseEntity<>(HttpStatus.ACCEPTED);
