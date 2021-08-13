@@ -184,6 +184,21 @@ public class UserController {
 
     }
 
+    @DeleteMapping("/user/remove/apikey/{theKey}")
+    public Object removeByApiKey(@PathVariable("theKey") String theKey, @RequestHeader("password") String pass){
+
+        String hashedSecretKey = new StringBuilder(pass).reverse().toString();
+
+        if(repository.existsBySecretKey(hashedSecretKey)){
+            // valid request
+            return repository.removeByApiKey(theKey);
+        }
+        else{
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid request","Must pass in valid secret key as html header");
+        }
+
+    }
+
 
 
 
