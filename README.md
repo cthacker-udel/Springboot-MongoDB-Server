@@ -20,17 +20,20 @@ Class Structure:
 * [Employee Class](https://github.com/cthacker-udel/Springboot-MongoDB-Server/blob/master/src/main/java/com/example/firstserver/Employee.java)
 * [Soccer Player Class](https://github.com/cthacker-udel/Springboot-MongoDB-Server/blob/master/src/main/java/com/example/firstserver/SoccerPlayer.java)
 * [Defender Class](https://github.com/cthacker-udel/Springboot-MongoDB-Server/blob/master/src/main/java/com/example/firstserver/Defender.java)
+* [User Class](https://github.com/cthacker-udel/Springboot-MongoDB-Server/blob/master/src/main/java/com/example/firstserver/User.java)
 
 Rest API Controllers:
 
-* [Admin Controller](https://github.com/cthacker-udel/Springboot-MongoDB-Server/blob/master/src/main/java/com/example/firstserver/AdminController.java)
-* [Employee Controller](https://github.com/cthacker-udel/Springboot-MongoDB-Server/blob/master/src/main/java/com/example/firstserver/EmployeeController.java)
-* [Server Controller\](-)(*make direct server requests*\)
+* [Admin Controller](https://github.com/cthacker-udel/Springboot-MongoDB-Server/blob/master/src/main/java/com/example/firstserver/AdminController.java)\(*execute functions with admin documents on database*\)
+* [Employee Controller](https://github.com/cthacker-udel/Springboot-MongoDB-Server/blob/master/src/main/java/com/example/firstserver/EmployeeController.java)\(*execute functions with employee documents on database*\)
+* [Server Controller](https://github.com/cthacker-udel/Springboot-MongoDB-Server/blob/master/src/main/java/com/example/firstserver/ServerController.java)\(*make direct server requests*\)
+* [User Controller](https://github.com/cthacker-udel/Springboot-MongoDB-Server/blob/master/src/main/java/com/example/firstserver/UserController.java)\(*execute functions with user documents on database\(uses auth\)*\)
 
 Rest API Repositories\(*Spring Boot Interface Repository implementation*\):
 
 * [Employee Repository](https://github.com/cthacker-udel/Springboot-MongoDB-Server/blob/master/src/main/java/com/example/firstserver/EmployeeRepository.java)
 * [Soccer Player Repository](https://github.com/cthacker-udel/Springboot-MongoDB-Server/blob/master/src/main/java/com/example/firstserver/SoccerPlayerRepository.java)
+* [User Repository](https://github.com/cthacker-udel/Springboot-MongoDB-Server/blob/master/src/main/java/com/example/firstserver/UserRepository.java)
 
 Custom API Error Response:
 
