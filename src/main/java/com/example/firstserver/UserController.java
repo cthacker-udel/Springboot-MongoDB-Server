@@ -153,6 +153,21 @@ public class UserController {
 
     }
 
+    @GetMapping("/user/all")
+    public Object getAllUsers(@RequestHeader("password") String pass){
+
+        String hashedKey = new StringBuilder(pass).reverse().toString();
+
+        if(repository.existsBySecretKey(hashedKey)){
+            // valid user request
+            return repository.findAll();
+        }
+        else{
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","Invalid request, must pass in valid hashed secret key");
+        }
+
+    }
+
 
 
 
