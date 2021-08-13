@@ -135,6 +135,20 @@ public class UserController {
 
     }
 
+    @PostMapping("/user/save")
+    public Object saveUser(@RequestBody User user){
+
+        if(repository.existsByUserName(user.userName)){
+            // valid save
+            repository.save(user);
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        }
+        else{
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","User does not exist, unable to save user");
+        }
+
+    }
+
 
 
 
