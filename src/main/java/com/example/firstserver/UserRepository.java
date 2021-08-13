@@ -10,6 +10,7 @@ public interface UserRepository extends MongoRepository<User,String> {
     public User getUserByApiKey(String apiKey);
 
     public User findByUserName(String userName);
+    public User findBySecretKey(String secretKey);
 
     public User insert(User user);
     public User save(User user);

@@ -119,6 +119,22 @@ public class UserController {
 
     }
 
+    @GetMapping("/user/{theKey}/secretKey")
+    public Object getBySecretKey(@PathVariable("theKey") String theSecretKey, @RequestParam(value="password",defaultValue="nopass") String password){
+
+        // revere pass to verify
+        String hashedPass = new StringBuilder(password).reverse().toString();
+
+        if(repository.existsByPassword(hashedPass)){
+            // valid auth
+            return repository.findBySecretKey(theSecretKey);
+        }
+        else{
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","Password sent in is invalid");
+        }
+
+    }
+
 
 
 
