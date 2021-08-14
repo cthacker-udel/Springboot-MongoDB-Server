@@ -145,6 +145,32 @@ public class UserController {
 
     }
 
+    @GetMapping("/user/get/password/{thePassword}")
+    public Object getTheUserByPassword(@PathVariable("thePassword") String pass, @RequestParam(value="signature",defaultValue = "defsignature") String signature){
+
+        if(!signature.equalsIgnoreCase("defsignature")){
+            // valid request
+            String hashedSignature = new StringBuilder(signature).reverse().toString();
+            if(repository.existsBySecretKey(hashedSignature)){
+                // valid signature
+                if(repository.existsByPassword(pass)){
+                    // valid user
+                    return repository.getUserByPassword(pass);
+                }
+                else{
+                    return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","Pass in valid password in request");
+                }
+            }
+            else{
+                return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","Pass in valid signature into request");
+            }
+        }
+        else{
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","Pass in valid signature in request as query param");
+        }
+
+    }
+
     @GetMapping("/user/username/{username}/find")
     public Object findUserByName(@PathVariable("username") String userName, @RequestParam(value="password",defaultValue="defpassword") String password){
 
