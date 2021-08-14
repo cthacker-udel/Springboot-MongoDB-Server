@@ -199,6 +199,28 @@ public class UserController {
 
     }
 
+    @GetMapping("/user/count/{userName}")
+    public Object countByUserName(@PathVariable("userName") String userName, @RequestParam(value="password",defaultValue = "nopass") String pass){
+
+        String hashedPass = new StringBuilder(pass).reverse().toString();
+
+        if(repository.existsBySecretKey(hashedPass)){
+            // valid user
+            if(repository.existsByUserName(userName)){
+                // user exists
+                return repository.countByUserName(userName);
+            }
+            else{
+                return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","Signature was correct, Username does not exist in database, however");
+            }
+        }
+        else{
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","Invalid password passed into request parameter");
+        }
+
+
+    }
+
 
 
 
