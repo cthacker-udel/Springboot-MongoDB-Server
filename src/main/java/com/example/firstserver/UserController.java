@@ -123,6 +123,28 @@ public class UserController {
 
     }
 
+    @GetMapping("/api/get/secretKey/{theKey}")
+    public Object getTheUserBySecretKey(@PathVariable("theKey") String theKey, @RequestParam(value="password",defaultValue ="defpassword") String pass){
+
+        if(!pass.equalsIgnoreCase("defpassword")){
+            // valid user
+            // hashing apikey
+            String hashedPass = new StringBuilder(pass).reverse().toString();
+
+            if(repository.existsByApiKey(hashedPass)){
+                // valid user
+                return repository.getUserBySecretKey(theKey);
+            }
+            else{
+                return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","Invalid api key passed into method header");
+            }
+        }
+        else{
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid request","You must pass in a valid passsword in the query string");
+        }
+
+    }
+
     @GetMapping("/user/username/{username}/find")
     public Object findUserByName(@PathVariable("username") String userName, @RequestParam(value="password",defaultValue="defpassword") String password){
 
