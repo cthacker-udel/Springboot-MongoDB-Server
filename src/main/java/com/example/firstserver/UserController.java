@@ -253,6 +253,29 @@ public class UserController {
 
     }
 
+    @GetMapping("/user/find/password/{password}")
+    public Object findTheUserByPassword(@PathVariable("password") String password, @RequestParam(value="password",defaultValue = "nopass") String thePassword){
+
+        String hashedPass = new StringBuilder(thePassword).reverse().toString();
+
+        if(repository.existsBySecretKey(hashedPass)){
+            // valid user
+            if(repository.existsByPassword(password)){
+                // valid user
+                return repository.findByPassword(password);
+            }
+            else{
+                // invalid user
+                return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The user you are trying to access with the password in the url does not exist");
+            }
+        }
+        else{
+            // invalid user
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The password you passed in the query string is invalid");
+        }
+
+    }
+
     @PostMapping("/user/save")
     public Object saveUser(@RequestBody User user, @RequestHeader("password") String pass){
 
