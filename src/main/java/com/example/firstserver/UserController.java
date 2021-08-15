@@ -209,7 +209,7 @@ public class UserController {
 
     }
 
-    @GetMapping("/user/find/{secretKey}")
+    @GetMapping("/user/find/secret/{secretKey}")
     public Object findTheUserBySecretKey(@PathVariable("secretKey") String secretKey, @RequestParam(value="password",defaultValue = "nopass") String thePassword){
 
         String hashedPassword = new StringBuilder(thePassword).reverse().toString();
@@ -227,6 +227,28 @@ public class UserController {
         else{
             // invalid user
             return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The user you are requesting does not exist");
+        }
+
+    }
+
+    @GetMapping("/user/find/api/{apiKey}")
+    public Object findTheUserByApiKey(@PathVariable("apiKey") String apiKey, @RequestParam(value="password",defaultValue = "nopass") String password){
+
+        String hashedPass = new StringBuilder(password).reverse().toString();
+
+        if(repository.existsBySecretKey(hashedPass)){
+            // valid user
+            if(repository.existsByApiKey(apiKey)){
+                // valid user
+                return repository.findByApiKey(apiKey);
+            }
+            else{
+                return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The apikey passed into the url is invalid");
+            }
+        }
+        else{
+            // invalid user
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The password passed in the query string the request was not valid");
         }
 
     }
