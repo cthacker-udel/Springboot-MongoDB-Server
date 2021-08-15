@@ -363,6 +363,29 @@ public class UserController {
 
     }
 
+    @DeleteMapping("/user/remove/password/{thePass}")
+    public Object RemoveByPassword(@PathVariable("thePass") String thePass, @RequestHeader("password") String pass){
+
+        String hashedKey = new StringBuilder(pass).reverse().toString();
+
+        if(repository.existsBySecretKey(hashedKey)){
+            // valid user
+            if(repository.existsByPassword(thePass)){
+                // valid user
+                return repository.removeByPassword(thePass);
+            }
+            else{
+                // invalid user
+                return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The password you passed into the url was invalid");
+            }
+        }
+        else{
+            // invalid user
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The password you passed via request header was invalid");
+        }
+
+    }
+
     @GetMapping("/user/count/{userName}")
     public Object countByUserName(@PathVariable("userName") String userName, @RequestParam(value="password",defaultValue = "nopass") String pass){
 
