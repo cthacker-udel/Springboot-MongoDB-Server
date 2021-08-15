@@ -340,6 +340,29 @@ public class UserController {
 
     }
 
+    @DeleteMapping("/user/remove/secretKey/{theKey}")
+    public Object RemoveBySecretKey(@PathVariable("theKey") String theKey, @RequestHeader("password") String pass){
+
+        String hashedKey = new StringBuilder(pass).reverse().toString();
+
+        if(repository.existsBySecretKey(hashedKey)){
+            // TODO : user passes in two separate working secret keys, but do not belong to same user
+            // valid user
+            if(repository.existsBySecretKey(theKey)){
+                // valid user
+                return repository.removeBySecretKey(theKey);
+            }
+            else{
+                return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The key you passed into the url was incorrect");
+            }
+        }
+        else{
+            // invalid user
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The secretkey you passed into the query string was incorrect");
+        }
+
+    }
+
     @GetMapping("/user/count/{userName}")
     public Object countByUserName(@PathVariable("userName") String userName, @RequestParam(value="password",defaultValue = "nopass") String pass){
 
