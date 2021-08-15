@@ -408,7 +408,10 @@ public class UserController {
 
     }
 
-    @GetMapping("/user/count/")
+    @GetMapping("/user/count/apikey/{theKey}")
+    public Object CountByApiKey(@PathVariable("theKey") String theKey, @RequestParam(value="password",defaultValue="nopass") String thePass){
+        return null;
+    }
 
 
 
