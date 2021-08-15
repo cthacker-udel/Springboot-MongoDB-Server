@@ -32,5 +32,8 @@ public interface UserRepository extends MongoRepository<User,String> {
     public User removeByPassword(String password);
 
     public Integer countByUserName(String userName);
+    public Integer countByApiKey(String apiKey);
+    public Integer countBySecretKey(String secretKey);
+    public Integer countByPassword(String password);
 
 }
