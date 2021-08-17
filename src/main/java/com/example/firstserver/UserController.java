@@ -491,6 +491,27 @@ public class UserController {
 
     }
 
+    @GetMapping("/user/findall/username/{theName}")
+    public Object findAllUsersByUserName(@PathVariable("theName") String theName, @RequestParam(value="secret-key",defaultValue = "nokey") String theKey){
+
+        String hashedPass = new StringBuilder(theKey).reverse().toString();
+
+        if(repository.existsBySecretKey(hashedPass)){
+            // valid user
+            if(repository.existsByUserName(theName)){
+                // valid username
+                return repository.findAllByUserName(theName);
+            }
+            else{
+                return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The username passed via url is invalid");
+            }
+        }
+        else{
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The secret key passed via query string is invalid");
+        }
+
+    }
+
 
 
 }
