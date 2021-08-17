@@ -410,7 +410,32 @@ public class UserController {
 
     @GetMapping("/user/count/apikey/{theKey}")
     public Object CountByApiKey(@PathVariable("theKey") String theKey, @RequestParam(value="password",defaultValue="nopass") String thePass){
-        return null;
+
+        String hashedPass = new StringBuilder(thePass).reverse().toString();
+
+        if(repository.existsBySecretKey(hashedPass)){
+
+            if(repository.existsByApiKey(theKey)){
+
+                // valid user
+                return repository.countByApiKey(theKey);
+
+            }
+            else{
+
+                // invalid user
+                return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The API key you passed in via url is invalid");
+
+            }
+
+        }
+        else{
+
+            // invalid user
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The password passed via query string is invalid");
+
+        }
+
     }
 
 
