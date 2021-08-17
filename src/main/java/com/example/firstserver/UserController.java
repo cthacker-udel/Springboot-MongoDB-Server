@@ -467,8 +467,29 @@ public class UserController {
 
     }
 
+    @GetMapping("/user/count/password/{thePassword}")
+    public Object countUserByPassword(@PathVariable("thePassword") String thePass, @RequestParam(value="password",defaultValue="nopass") String password){
 
+        String hashedPass = new StringBuilder(password).reverse().toString();
 
+        if (repository.existsBySecretKey(hashedPass)) {
+            // valid user
+            if(repository.existsByPassword(thePass)){
+                // valid user
+                return repository.countByPassword(thePass);
+            }
+            else{
+                // invalid user
+                return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The password passed via url is invalid");
+            }
+        }
+        else{
+
+            // invalid user
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The secret key passed via query string is invalid");
+        }
+
+    }
 
 
 
