@@ -413,7 +413,7 @@ public class UserController {
 
         String hashedPass = new StringBuilder(thePass).reverse().toString();
 
-        if(repository.existsBySecretKey(hashedPass)){
+        if(repository.existsBySecretKey(hashedPass) && !thePass.equalsIgnoreCase("nopass")){
 
             if(repository.existsByApiKey(theKey)){
 
@@ -432,7 +432,36 @@ public class UserController {
         else{
 
             // invalid user
-            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The password passed via query string is invalid");
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The secret key passed via query string is invalid");
+
+        }
+
+    }
+
+    @GetMapping("/user/count/secretKey/{theKey}")
+    public Object countUserBySecretKey(@PathVariable("theKey") String theKey, @RequestParam(value="password",defaultValue="nopass") String password){
+
+        String hashedPass = new StringBuilder(password).reverse().toString();
+
+        if(repository.existsBySecretKey(password) && !password.equalsIgnoreCase("nopass")){
+
+            if(repository.existsBySecretKey(theKey) && theKey.equals(hashedPass)){
+
+                // valid user
+                return repository.countBySecretKey(theKey);
+
+            }
+            else{
+
+                // invalid user
+                return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The Secret key passed via url is invalid");
+
+            }
+
+        }
+        else{
+
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The secret key passed into the call via query string is invalid");
 
         }
 
