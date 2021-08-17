@@ -36,4 +36,9 @@ public interface UserRepository extends MongoRepository<User,String> {
     public Integer countBySecretKey(String secretKey);
     public Integer countByPassword(String password);
 
+    public List<User> findAllByUserName(String userName);
+    public List<User> findAllBySecretKey(String secretKey);
+    public List<User> findAllByApiKey(String apiKey);
+    public List<User> findAllByPassword(String password);
+
 }
