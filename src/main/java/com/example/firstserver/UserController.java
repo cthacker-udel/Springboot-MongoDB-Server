@@ -512,6 +512,29 @@ public class UserController {
 
     }
 
+    @GetMapping("/user/findall/password/{thePass}")
+    public Object findAllUsersByPassword(@PathVariable("thePass") String thePassword, @RequestParam(value="secret-key",defaultValue = "secret_key") String theKey){
+
+        String hashedPass = new StringBuilder(theKey).reverse().toString();
+
+        if(repository.existsBySecretKey(hashedPass)){
+            // valid user
+            if(repository.existsByPassword(thePassword)){
+                // valid user
+                return null;
+            }
+            else{
+                // invalid user
+                return null;
+            }
+        }
+        else{
+            // invalid user
+            return null;
+        }
+
+    }
+
 
 
 }
