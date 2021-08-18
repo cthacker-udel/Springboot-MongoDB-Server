@@ -535,6 +535,36 @@ public class UserController {
 
     }
 
+    @GetMapping("/user/findall/secretkey/{thekey}")
+    public Object findAllUsersBySecretKey(@PathVariable("thekey") String theKey, @RequestParam(value="secret-key",defaultValue = "nokey") String secretKey){
+
+        String hashedPass = new StringBuilder(secretKey).reverse().toString();
+
+        if(repository.existsBySecretKey(hashedPass)){
+            // valid user
+            if(repository.existsBySecretKey(theKey)){
+                // valid user
+                if(hashedPass.equalsIgnoreCase(theKey)){
+                    // same pass- same user- valid user
+                    return repository.findAllBySecretKey(theKey);
+                }
+                else{
+                    // different keys passed - invalid user
+                    return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","Both of the keys passed(url and query string) are not the same keys");
+                }
+            }
+            else{
+                // invalid user
+                return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The key you passed via url is invalid");
+            }
+        }
+        else{
+            // invalid user
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The key you passed via query string is invalid");
+        }
+
+    }
+
 
 
 }
