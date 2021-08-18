@@ -521,16 +521,16 @@ public class UserController {
             // valid user
             if(repository.existsByPassword(thePassword)){
                 // valid user
-                return null;
+                return repository.findAllByPassword(thePassword);
             }
             else{
                 // invalid user
-                return null;
+                return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The password passed into the url is invalid");
             }
         }
         else{
             // invalid user
-            return null;
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The key passed into the query string is invalid");
         }
 
     }
