@@ -23,5 +23,15 @@ public interface ClientRepository extends MongoRepository<Client,String> {
 
     List<Client> getClientsByUserName(String userName);
 
+    Client insertClient(Client client);
+
+    Client saveClient(Client client);
+
+    boolean existsByFirstName(String firstName);
+
+    boolean existsByLastName(String lastName);
+
+    boolean existsByUserName(String userName);
+
 
 }
