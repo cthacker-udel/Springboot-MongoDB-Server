@@ -22,7 +22,7 @@ public class ClientController {
         if(userRepository.existsBySecretKey(hashedPass)){
             // valid user
 
-            repository.saveClient(client);
+            repository.save(client);
 
             System.out.println("\n---STATUS 200 : USER SAVED IN DATABASE---\n");
 
