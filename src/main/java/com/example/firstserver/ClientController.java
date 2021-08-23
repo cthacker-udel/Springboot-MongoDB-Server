@@ -54,6 +54,20 @@ public class ClientController {
             return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The key passed via auth header is invalid");
         }
 
+    }
+
+    @GetMapping("/client/first/{firstName}")
+    public Object getClientByFirstName(@RequestParam(value="firstname",defaultValue = "noname") String firstName, @RequestHeader("Authorization") String secretKey){
+
+        String hashedKey = new StringBuilder(secretKey).reverse().toString();
+
+        if(userRepository.existsBySecretKey(hashedKey)){
+            // valid user
+            return repository.getClientByFirstName(firstName);
+        }
+        else{
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The user you are requesting does not exist");
+        }
 
 
     }
