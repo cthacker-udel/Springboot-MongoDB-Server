@@ -56,19 +56,41 @@ public class ClientController {
 
     }
 
-    @GetMapping("/client/first/{firstName}")
+    @GetMapping("/client/first")
     public Object getClientByFirstName(@RequestParam(value="firstname",defaultValue = "noname") String firstName, @RequestHeader("Authorization") String secretKey){
 
         String hashedKey = new StringBuilder(secretKey).reverse().toString();
 
         if(userRepository.existsBySecretKey(hashedKey)){
             // valid user
+            if(firstName.equalsIgnoreCase("noname")){
+                return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","Must supply first name as argument in query string");
+            }
             return repository.getClientByFirstName(firstName);
         }
         else{
             return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The user you are requesting does not exist");
         }
 
+    }
+
+    @GetMapping("/client/last")
+    public Object getClientByLastName(@RequestParam(value="lastname",defaultValue = "noname") String lastName, @RequestHeader("Authorization") String secretKey){
+
+        String hashedKey = new StringBuilder(secretKey).reverse().toString();
+
+        if(userRepository.existsBySecretKey(hashedKey)){
+            // user exists
+            if(lastName.equalsIgnoreCase("noname")){
+                return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","Must supply last name in query string");
+            }
+            else{
+                return repository.getClientByLastName(lastName);
+            }
+        }
+        else{
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The user you are trying to retrieve does not exists[secret key error]");
+        }
 
     }
 
