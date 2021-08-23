@@ -37,4 +37,25 @@ public class ClientController {
 
     }
 
+    @PostMapping("/client/save")
+    public Object saveClient(@RequestBody Client client, @RequestHeader("Authorization") String secretKey){
+
+        String hashedKey = new StringBuilder(secretKey).reverse().toString();
+
+        if(userRepository.existsBySecretKey(hashedKey)){
+            // valid user
+
+            repository.insert(client);
+            System.out.println("-- STATUS 200 : CLIENT SAVED --\n");
+            return client;
+
+        }
+        else{
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The key passed via auth header is invalid");
+        }
+
+
+
+    }
+
 }
