@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+
 @RestController
 public class ClientController {
 
@@ -111,6 +113,25 @@ public class ClientController {
         }
         else{
             return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The key you passed via header is invalid");
+        }
+
+
+    }
+
+    @GetMapping("/client/assets")
+    public Object getClientByAssets(@RequestParam(value="assets",defaultValue = "noassets") BigDecimal assets, @RequestHeader("Authorization") String secretKey){
+
+        String hashedPass = new StringBuilder(secretKey).reverse().toString();
+
+        if (userRepository.existsBySecretKey(hashedPass)) {
+            // valid user
+            return repository.getClientByAssets(assets);
+
+        }
+        else{
+
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid request","The secret key passed into the function is invalid");
+
         }
 
 
