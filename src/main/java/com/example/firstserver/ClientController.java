@@ -204,4 +204,34 @@ public class ClientController {
 
     }
 
+    @GetMapping("/client/all/userName")
+    public Object getTheClientsByUserName(@RequestParam(value="username",defaultValue = "noname") String userName, @RequestHeader("Authorization") String secretKey){
+
+        String hashedKey = new StringBuilder(secretKey).reverse().toString();
+
+        if(userRepository.existsBySecretKey(hashedKey)){
+
+            if(repository.existsByUserName(userName)){
+                // valid request
+
+                return repository.getClientsByUserName(userName);
+
+            }
+            else{
+
+                return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The username passed via query string is invalid");
+
+            }
+
+        }
+        else{
+
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The secret key passed via request header is invalid");
+
+        }
+
+
+
+    }
+
 }
