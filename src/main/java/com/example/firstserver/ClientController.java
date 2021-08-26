@@ -176,4 +176,32 @@ public class ClientController {
 
     }
 
+    @GetMapping("/client/all/lastName")
+    public Object getTheClientsByLastName(@RequestParam(value="lastname",defaultValue = "noname") String lastName, @RequestHeader("Authorization") String secretKey){
+
+        String hashedKey = new StringBuilder(secretKey).reverse().toString();
+
+        if(!userRepository.existsBySecretKey(hashedKey)){
+
+            if(repository.existsByLastName(lastName)){
+
+                return repository.getClientsByLastName(lastName);
+
+            }
+            else{
+
+                return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The last name passed into this request is invalid");
+
+            }
+
+        }
+        else{
+
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The secret key passed via request header is invalid");
+
+        }
+
+
+    }
+
 }
