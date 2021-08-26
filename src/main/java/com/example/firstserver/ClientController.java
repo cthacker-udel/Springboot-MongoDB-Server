@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @RestController
 public class ClientController {
@@ -59,7 +60,7 @@ public class ClientController {
     }
 
     @GetMapping("/client/first")
-    public Object getClientByFirstName(@RequestParam(value="firstname",defaultValue = "noname") String firstName, @RequestHeader("Authorization") String secretKey){
+    public Object getTheClientByFirstName(@RequestParam(value="firstname",defaultValue = "noname") String firstName, @RequestHeader("Authorization") String secretKey){
 
         String hashedKey = new StringBuilder(secretKey).reverse().toString();
 
@@ -77,7 +78,7 @@ public class ClientController {
     }
 
     @GetMapping("/client/last")
-    public Object getClientByLastName(@RequestParam(value="lastname",defaultValue = "noname") String lastName, @RequestHeader("Authorization") String secretKey){
+    public Object getTheClientByLastName(@RequestParam(value="lastname",defaultValue = "noname") String lastName, @RequestHeader("Authorization") String secretKey){
 
         String hashedKey = new StringBuilder(secretKey).reverse().toString();
 
@@ -97,7 +98,7 @@ public class ClientController {
     }
 
     @GetMapping("/client/user")
-    public Object getClientByUserName(@RequestParam(value="username",defaultValue = "nousername") String userName, @RequestHeader("Authorization") String secretKey){
+    public Object getTheClientByUserName(@RequestParam(value="username",defaultValue = "nousername") String userName, @RequestHeader("Authorization") String secretKey){
 
         String hashedKey = new StringBuilder(secretKey).reverse().toString();
 
@@ -119,7 +120,7 @@ public class ClientController {
     }
 
     @GetMapping("/client/assets")
-    public Object getClientByAssets(@RequestParam(value="assets",defaultValue = "noassets") BigDecimal assets, @RequestHeader("Authorization") String secretKey){
+    public Object getTheClientByAssets(@RequestParam(value="assets",defaultValue = "noassets") BigDecimal assets, @RequestHeader("Authorization") String secretKey){
 
         String hashedPass = new StringBuilder(secretKey).reverse().toString();
 
@@ -131,6 +132,44 @@ public class ClientController {
         else{
 
             return new ApiError(HttpStatus.BAD_REQUEST,"Invalid request","The secret key passed into the function is invalid");
+
+        }
+
+
+    }
+
+    @GetMapping("/client/all/firstName")
+    public Object getTheClientsByFirstName(@RequestParam(value="firstname",defaultValue="noname") String firstName, @RequestHeader("Authorization") String secretKey){
+
+        String hashedKey = new StringBuilder(secretKey).reverse().toString();
+
+        if(userRepository.existsBySecretKey(hashedKey)){
+
+            if(!firstName.equalsIgnoreCase("noname")){
+                // valid request
+
+                if(repository.existsByFirstName(firstName)){
+                    // valid user
+                    return repository.getClientsByFirstName(firstName);
+                }
+                else{
+
+                    return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The first name passed into the request does not exist in the database");
+
+                }
+
+            }
+            else{
+
+                return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The first name passed into the function is invalid");
+
+            }
+
+
+        }
+        else{
+
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The secret key passed via request header is invalid");
 
         }
 
