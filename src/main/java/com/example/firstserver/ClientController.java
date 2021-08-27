@@ -310,4 +310,27 @@ public class ClientController {
 
     }
 
+    @DeleteMapping("/client/del/firstname")
+    public Object removeTheClientByFirstName(@RequestBody String firstName, @RequestHeader("Authorization") String secretKey){
+
+
+        String hashedKey = new StringBuilder(secretKey).reverse().toString();
+
+        if(userRepository.existsBySecretKey(hashedKey)){
+            // valid user
+            if(repository.existsByFirstName(firstName)){
+                // valid user
+                return repository.removeByFirstName(firstName);
+            }
+            else{
+                return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The firstname passed in does not exist in the database");
+            }
+        }
+        else{
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The secret key is invalid");
+        }
+
+
+    }
+
 }
