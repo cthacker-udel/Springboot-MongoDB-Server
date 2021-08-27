@@ -234,4 +234,32 @@ public class ClientController {
 
     }
 
+    @GetMapping("/client/exists/firstname")
+    public Object doesClientExistFirstName(@RequestParam(value="firstname",defaultValue = "noname") String firstname, @RequestHeader("Authorization") String secretKey){
+
+        String hashedKey = new StringBuilder(secretKey).reverse().toString();
+
+        if(userRepository.existsBySecretKey(hashedKey)){
+
+            // valid user
+            if(repository.existsByFirstName(firstname)){
+                // valid user
+                return repository.existsByFirstName(firstname);
+            }
+            else{
+
+                return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The user you are searching for via firstname in query string is invalid");
+
+            }
+
+        }
+        else{
+
+            return new ApiError(HttpStatus.BAD_REQUEST, "Invalid Request", "The secret key passed via request header is invalid");
+
+        }
+
+
+    }
+
 }
