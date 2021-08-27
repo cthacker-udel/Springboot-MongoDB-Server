@@ -33,5 +33,11 @@ public interface ClientRepository extends MongoRepository<Client,String> {
 
     boolean existsByUserName(String userName);
 
+    Client removeByFirstName(String firstName);
+
+    Client removeByLastName(String lastName);
+
+    Client removeByUserName(String userName);
+
 
 }
