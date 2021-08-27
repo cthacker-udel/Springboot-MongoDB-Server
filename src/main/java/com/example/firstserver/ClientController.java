@@ -284,4 +284,30 @@ public class ClientController {
 
     }
 
+    @GetMapping("/client/exists/username")
+    public Object doesClientExistUserName(@RequestParam(value="username",defaultValue="noname") String userName, @RequestHeader("Authorization") String auth){
+
+        String hashedKey = new StringBuilder(auth).reverse().toString();
+
+        if(userRepository.existsBySecretKey(hashedKey)){
+
+            // valid user
+            if(repository.existsByUserName(userName)){
+                // valid user
+                return repository.existsByUserName(userName);
+            }
+            else{
+                return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The username you are searching for is invalid");
+            }
+
+        }
+        else{
+
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","Authentication Failed: the secret key passed via header is invalid");
+
+        }
+
+
+    }
+
 }
