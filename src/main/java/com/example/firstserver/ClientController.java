@@ -333,4 +333,28 @@ public class ClientController {
 
     }
 
+    @DeleteMapping("/client/del/lastname")
+    public Object removeTheClientByLastName(@RequestBody String lastName, @RequestHeader("Authorization") String secretKey){
+
+        String hashedKey = new StringBuilder(secretKey).reverse().toString();
+
+        if(userRepository.existsBySecretKey(hashedKey)){
+            // valid user
+            if(repository.existsByLastName(lastName)){
+                // valid user
+                return repository.removeByLastName(lastName);
+            }
+            else{
+                return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The lastname passed into the body is invalid");
+            }
+        }
+        else{
+
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The lastname passed in does not exist in the database");
+
+        }
+
+
+    }
+
 }
