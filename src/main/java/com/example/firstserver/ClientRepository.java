@@ -39,5 +39,11 @@ public interface ClientRepository extends MongoRepository<Client,String> {
 
     Client removeByUserName(String userName);
 
+    Integer countAllByFirstName(String firstName);
+
+    Integer countAllByLastName(String lastName);
+
+    Integer countAllByUserName(String userName);
+
 
 }

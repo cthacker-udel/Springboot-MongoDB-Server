@@ -383,4 +383,31 @@ public class ClientController {
 
     }
 
+    @GetMapping("/client/count/firstname")
+    public Object countAllClientsByFirstName(@RequestParam(value="firstname",defaultValue = "noname") String firstName, @RequestHeader("Authorization") String secretKey){
+
+        String hashedKey = new StringBuilder(secretKey).reverse().toString();
+
+        if(userRepository.existsBySecretKey(hashedKey)){
+
+            // valid user
+            if(repository.existsByFirstName(firstName)){
+                // valid users
+                return repository.countAllByFirstName(firstName);
+            }
+            else{
+                return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The firstname passed via query string is invalid");
+            }
+
+        }
+        else{
+
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The secret key being passed via header is invalid");
+
+
+        }
+
+
+    }
+
 }
