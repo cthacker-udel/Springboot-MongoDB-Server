@@ -354,6 +354,32 @@ public class ClientController {
 
         }
 
+    }
+
+
+    @DeleteMapping("/client/del/username")
+    public Object removeTheClientByUserName(@RequestBody String userName, @RequestHeader("Authorization") String auth){
+
+        String hashedKey = new StringBuilder(auth).reverse().toString();
+
+        if(userRepository.existsBySecretKey(hashedKey)){
+
+            // valid user
+            if(repository.existsByUserName(userName)){
+                // valid user
+                return repository.removeByUserName(userName);
+            }
+            else{
+                return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The username passed via body is invalid");
+            }
+
+        }
+        else{
+
+            return new ApiError(HttpStatus.BAD_REQUEST,"Invalid Request","The secret key passed via header is invalid");
+
+        }
+
 
     }
 
